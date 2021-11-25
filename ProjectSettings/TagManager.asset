@@ -22,8 +22,8 @@ TagManager:
   - Land
   - Tower
   - PreviewObject
-  - SelectBitton
-  - 
+  - TowerBuildButton
+  - LandBuildButton
   - 
   - 
   - 

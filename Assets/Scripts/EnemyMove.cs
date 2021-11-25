@@ -80,7 +80,7 @@ public class EnemyMove : MonoBehaviour
                     {
                         isWall = true;
                     }
-
+                
                 NodeArray[i, j] = new Node(isWall, i + bottomLeft.x, j + bottomLeft.y);
             }
         }
@@ -208,16 +208,13 @@ public class EnemyMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (index < FinalNodeList.Count)
         {
-            if (index < FinalNodeList.Count)
+            targetPosition = new Vector2(FinalNodeList[index].x, FinalNodeList[index].y);
+            transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed);
+            if (transform.position.x == targetPosition.x && transform.position.y == targetPosition.y)
             {
-                targetPosition = new Vector2(FinalNodeList[index].x, FinalNodeList[index].y);
-                transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed);
-                if (transform.position.x == targetPosition.x && transform.position.y == targetPosition.y)
-                {
-                    index++;
-                }
+                index++;
             }
         }
     }

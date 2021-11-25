@@ -6,14 +6,93 @@ using UnityEngine.Events;
 public class Click : MonoBehaviour
 {
     public GameObject previewGrid;
+    public GameObject previewDangerGrid;
     public GameObject previewTower;
     public GameObject tower;
     public int towerNumber;
     Vector2 mousePosition;
     Camera Camera;
     GameObject instantiatedTower;
+    bool canBuild = true;
 
     public UnityEvent landBuild;
+
+    void BuildLand()
+    {
+        Debug.Log("CLICK: " + gameObject.name);
+        switch (groundClick.clickCount)
+        {
+            case 0:
+                groundClick.clickTowerNumber = towerNumber;
+                groundClick.clickCount++;
+                previewGrid.SetActive(false);
+                previewTower.transform.localPosition = new Vector3(groundClick.towerX, groundClick.towerY, -3);
+                previewTower.SetActive(true);
+                if(canBuild == false)
+                {
+                    previewDangerGrid.transform.localPosition = new Vector3(groundClick.towerX, groundClick.towerY, -4);
+                    previewDangerGrid.SetActive(true);
+                }
+
+                break;
+            case 1:
+                if (groundClick.clickTowerNumber == towerNumber)
+                {
+                    previewTower.SetActive(false);
+                    instantiatedTower = Instantiate(tower, new Vector3(groundClick.towerX, groundClick.towerY, -1), Quaternion.identity);
+                    Debug.Log("LAND BUILD");
+                    landBuild.Invoke();
+                    groundClick.clickCount = 0;
+                    groundClick.selectMenuOn = false;
+                }
+                else
+                {
+                    groundClick.clickTowerNumber = towerNumber;
+                    previewTower.transform.localPosition = new Vector3(groundClick.towerX, groundClick.towerY, -3);
+                    previewTower.SetActive(true);
+                }
+                break;
+            default:
+                groundClick.clickCount = 0;
+                break;
+
+        }
+    }
+
+    void BuildTower()
+    {
+        Debug.Log("CLICK: " + gameObject.name);
+        switch (groundClick.clickCount)
+        {
+            case 0:
+                groundClick.clickTowerNumber = towerNumber;
+                groundClick.clickCount++;
+                previewGrid.SetActive(false);
+                previewTower.transform.localPosition = new Vector3(groundClick.towerX, groundClick.towerY, -3);
+                previewTower.SetActive(true);
+                break;
+            case 1:
+                if (groundClick.clickTowerNumber == towerNumber)
+                {
+                    Debug.Log("TOWER BUILD");
+                    previewTower.SetActive(false);
+                    instantiatedTower = Instantiate(tower, new Vector3(groundClick.towerX, groundClick.towerY, -2), Quaternion.identity);
+                    groundClick.clickCount = 0;
+                    groundClick.selectMenuOn = false;
+                }
+                else
+                {
+                    groundClick.clickTowerNumber = towerNumber;
+                    previewTower.transform.localPosition = new Vector3(groundClick.towerX, groundClick.towerY, -3);
+                    previewTower.SetActive(true);
+                }
+                break;
+            default:
+                groundClick.clickCount = 0;
+                break;
+
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -33,73 +112,16 @@ public class Click : MonoBehaviour
             {
                 previewTower.SetActive(false);
             }
-            if(groundClick.clickCount == 1 && raycastHit2D.collider != gameObject.GetComponent<CircleCollider2D>())
-            {
-
-            }
             if (raycastHit2D.collider == gameObject.GetComponent<CircleCollider2D>())
             {
-                Debug.Log("CLICK: " + gameObject.name);
-                switch (groundClick.clickCount)
+                if(gameObject.layer == LayerMask.NameToLayer("LandBuildButton"))
                 {
-                    case 0:
-                        groundClick.clickTowerNumber = towerNumber;
-                        groundClick.clickCount++;
-                        previewGrid.SetActive(false);
-                        previewTower.transform.localPosition = new Vector3(groundClick.towerX, groundClick.towerY, -3);
-                        previewTower.SetActive(true);
-                        break;
-                    case 1:
-                        if(groundClick.clickTowerNumber == towerNumber)
-                        {
-                            Debug.Log("clickCount2");
-                            previewTower.SetActive(false);
-                            instantiatedTower = Instantiate(tower, new Vector3(groundClick.towerX, groundClick.towerY, -2), Quaternion.identity);
-                            if (instantiatedTower.layer == LayerMask.NameToLayer("Land"))
-                            {
-                                Debug.Log("LAND BUILD");
-                                instantiatedTower.transform.localPosition = new Vector3(groundClick.towerX, groundClick.towerY, -1);
-                                landBuild.Invoke();
-                            }
-                            groundClick.clickCount = 0;
-                            groundClick.selectMenuOn = false;
-                        }
-                        else
-                        {
-                            groundClick.clickTowerNumber = towerNumber;
-                            previewTower.transform.localPosition = new Vector3(groundClick.towerX, groundClick.towerY, -3);
-                            previewTower.SetActive(true);
-                        }
-                        break;
-                    default:
-                        groundClick.clickCount = 0;
-                        break;
-
+                    BuildLand();
                 }
-                /*if (groundClick.clickCount == 1)
+                else if(gameObject.layer == LayerMask.NameToLayer("TowerBuildButton"))
                 {
-                    Debug.Log("clickCount1");
-                    previewGrid.SetActive(false);
-                    previewTower.transform.localPosition = new Vector3(groundClick.towerX, groundClick.towerY, -3);
-                    previewTower.SetActive(true);
-                    /*
-                    instantiatedTower = Instantiate(tower, new Vector3(groundClick.towerX, groundClick.towerY, 0), Quaternion.identity);
-                    Color color = instantiatedTower.GetComponent<SpriteRenderer>().color;
-                    color.a = 0.5f;
-                    instantiatedTower.GetComponent<SpriteRenderer>().color = color;
+                    BuildTower();
                 }
-                else if(groundClick.clickCount == 2)
-                {
-                    Debug.Log("clickCount2");
-                    previewTower.SetActive(false);
-                    instantiatedTower = Instantiate(tower, new Vector3(groundClick.towerX, groundClick.towerY, -2), Quaternion.identity);
-                    if(instantiatedTower.tag == "Land")
-                    {
-                        instantiatedTower.transform.localPosition = new Vector3(groundClick.towerX, groundClick.towerY, -1);
-                    }
-                    groundClick.clickCount = 0;
-                    groundClick.selectMenuOn = false;
-                }*/
             }
             else
             {
