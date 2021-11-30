@@ -174,8 +174,8 @@ public class EnemyMove : MonoBehaviour
     public void landBuild()
     {
         Debug.Log("이벤트 실행");
-        int i = groundClick.towerX - bottomLeft.x;
-        int j = -groundClick.towerY - bottomLeft.y;
+        int i = GameManager.instance.towerX - bottomLeft.x;
+        int j = -GameManager.instance.towerY - bottomLeft.y;
         NodeArray[i, j] = new Node(true, NodeArray[i, j].x, NodeArray[i, j].y);
         string temp = "";
         for (int b = 0; b < 17; b++)
@@ -208,14 +208,25 @@ public class EnemyMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (index < FinalNodeList.Count)
+        if (!Input.GetKey(KeyCode.Space))
         {
-            targetPosition = new Vector2(FinalNodeList[index].x, FinalNodeList[index].y);
-            transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed);
-            if (transform.position.x == targetPosition.x && transform.position.y == targetPosition.y)
+            if (index < FinalNodeList.Count)
             {
-                index++;
+                targetPosition = new Vector2(FinalNodeList[index].x, FinalNodeList[index].y);
+                transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed);
+                if (transform.position.x == targetPosition.x && transform.position.y == targetPosition.y)
+                {
+                    index++;
+                }
             }
+        }
+        float enemyX = transform.position.x;
+        float enemyY = transform.position.y;
+        int towerX = GameManager.instance.towerX;
+        int towerY = GameManager.instance.towerY;
+        if (towerX - 0.5f < enemyX && enemyX < towerX + 0.5f && towerY - 0.5f < enemyY && enemyY < towerY + 0.5f)
+        {
+            GameManager.instance.canBuild = false;
         }
     }
 }

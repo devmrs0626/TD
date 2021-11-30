@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class groundClick : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     Vector2 mousePosition;
     Camera Camera;
@@ -10,12 +10,18 @@ public class groundClick : MonoBehaviour
     public GameObject previewGroup;
     public GameObject landSelectMenu;
     public GameObject towerSelectMenu;
-    public static bool selectMenuOn;
-    public static int towerX;
-    public static int towerY;
-    public static int clickCount;
-    public static int clickTowerNumber;
+    public bool selectMenuOn;
+    public int towerX;
+    public int towerY;
+    public int clickCount;
+    public int clickTowerNumber;
+    public bool canBuild;
+    public static GameManager instance;
     // Start is called before the first frame update
+    private void Awake()
+    {
+        instance = this;
+    }
     void Start()
     {
         Camera = GameObject.Find("Camera").GetComponent<Camera>();
@@ -25,6 +31,7 @@ public class groundClick : MonoBehaviour
         selectMenuOn = false;
         clickCount = 0;
         clickTowerNumber = 0;
+        canBuild = true;
 
     }
 
@@ -40,7 +47,6 @@ public class groundClick : MonoBehaviour
         mousePosition = Camera.ScreenToWorldPoint(Input.mousePosition);
         float x = mousePosition.x;
         float y = mousePosition.y;
-        //GameObject[] SelectButtonList = GameObject.FindGameObjectsWithTag("SelectButton");
         RaycastHit2D raycastHit2D = Physics2D.Raycast(mousePosition, Vector2.zero);
         if (Input.GetMouseButtonDown(0))
         {
@@ -92,64 +98,6 @@ public class groundClick : MonoBehaviour
             {
                 Debug.Log("null");
             }
-            
-            /*
-            Debug.Log("towerX=>     " + towerX);
-            Debug.Log("towerY=>     " + towerY);
-            Debug.Log("x=>     " + x);
-            Debug.Log("y=>     " + y);
-            if(selectMenuOn == true && towerX - 0.5f <= x && x <= towerX + 0.5f && towerY - 0.5f <= y && y <= towerY + 0.5f)
-            {
-                Debug.Log("removed");
-                landSelectMenu.SetActive(false);
-                selectMenuOn = false;
-                previewGrid.SetActive(false);
-            }
-            else
-            {
-                if(raycastHit2D.collider == gameObject.GetComponent<BoxCollider2D>())
-                {
-                    Debug.Log("box collider click");
-                }
-                bool buttonClick = false;
-                for (int i = 0; i < SelectButtonList.Length; i++)
-                {
-                    if (raycastHit2D.collider == SelectButtonList[i].GetComponent<CircleCollider2D>())
-                    {
-                        Debug.Log("button click");
-                        buttonClick = true;
-                        break;
-                    }
-                }
-                if (buttonClick == false)
-                {
-                    towerX = Mathf.Round(x);
-                    towerY = Mathf.Round(y);
-                    landSelectMenu.transform.localPosition = new Vector2(towerX, towerY);
-                    previewGrid.transform.localPosition = new Vector2(towerX, towerY);
-                    landSelectMenu.SetActive(true);
-                    selectMenuOn = true;
-                    previewGrid.SetActive(true);
-                }
-            }*/
-
-            /*
-            if(selectMenuOn == false)
-            {
-                float x = Mathf.Round(mousePosition.x);
-                float y = Mathf.Round(mousePosition.y);
-                landSelectMenu.transform.localPosition = new Vector2(x, y);
-                previewGrid.transform.localPosition = new Vector2(x, y);
-                landSelectMenu.SetActive(true);
-                selectMenuOn = true;
-                previewGrid.SetActive(true);
-            }
-            else if(buttonClick == false)
-            {
-                landSelectMenu.SetActive(false);
-                selectMenuOn = false;
-                previewGrid.SetActive(false);
-            }*/
         }
     }
 }

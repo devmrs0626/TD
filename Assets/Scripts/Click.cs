@@ -20,40 +20,34 @@ public class Click : MonoBehaviour
     void BuildLand()
     {
         Debug.Log("CLICK: " + gameObject.name);
-        switch (groundClick.clickCount)
+        switch (GameManager.instance.clickCount)
         {
             case 0:
-                groundClick.clickTowerNumber = towerNumber;
-                groundClick.clickCount++;
+                GameManager.instance.clickTowerNumber = towerNumber;
+                GameManager.instance.clickCount++;
                 previewGrid.SetActive(false);
-                previewTower.transform.localPosition = new Vector3(groundClick.towerX, groundClick.towerY, -3);
+                previewTower.transform.localPosition = new Vector3(GameManager.instance.towerX, GameManager.instance.towerY, -3);
                 previewTower.SetActive(true);
-                if(canBuild == false)
-                {
-                    previewDangerGrid.transform.localPosition = new Vector3(groundClick.towerX, groundClick.towerY, -4);
-                    previewDangerGrid.SetActive(true);
-                }
-
                 break;
             case 1:
-                if (groundClick.clickTowerNumber == towerNumber)
+                if (GameManager.instance.clickTowerNumber == towerNumber)
                 {
                     previewTower.SetActive(false);
-                    instantiatedTower = Instantiate(tower, new Vector3(groundClick.towerX, groundClick.towerY, -1), Quaternion.identity);
+                    instantiatedTower = Instantiate(tower, new Vector3(GameManager.instance.towerX, GameManager.instance.towerY, -1), Quaternion.identity);
                     Debug.Log("LAND BUILD");
                     landBuild.Invoke();
-                    groundClick.clickCount = 0;
-                    groundClick.selectMenuOn = false;
+                    GameManager.instance.clickCount = 0;
+                    GameManager.instance.selectMenuOn = false;
                 }
                 else
                 {
-                    groundClick.clickTowerNumber = towerNumber;
-                    previewTower.transform.localPosition = new Vector3(groundClick.towerX, groundClick.towerY, -3);
+                    GameManager.instance.clickTowerNumber = towerNumber;
+                    previewTower.transform.localPosition = new Vector3(GameManager.instance.towerX, GameManager.instance.towerY, -3);
                     previewTower.SetActive(true);
                 }
                 break;
             default:
-                groundClick.clickCount = 0;
+                GameManager.instance.clickCount = 0;
                 break;
 
         }
@@ -62,33 +56,33 @@ public class Click : MonoBehaviour
     void BuildTower()
     {
         Debug.Log("CLICK: " + gameObject.name);
-        switch (groundClick.clickCount)
+        switch (GameManager.instance.clickCount)
         {
             case 0:
-                groundClick.clickTowerNumber = towerNumber;
-                groundClick.clickCount++;
+                GameManager.instance.clickTowerNumber = towerNumber;
+                GameManager.instance.clickCount++;
                 previewGrid.SetActive(false);
-                previewTower.transform.localPosition = new Vector3(groundClick.towerX, groundClick.towerY, -3);
+                previewTower.transform.localPosition = new Vector3(GameManager.instance.towerX, GameManager.instance.towerY, -3);
                 previewTower.SetActive(true);
                 break;
             case 1:
-                if (groundClick.clickTowerNumber == towerNumber)
+                if (GameManager.instance.clickTowerNumber == towerNumber)
                 {
                     Debug.Log("TOWER BUILD");
                     previewTower.SetActive(false);
-                    instantiatedTower = Instantiate(tower, new Vector3(groundClick.towerX, groundClick.towerY, -2), Quaternion.identity);
-                    groundClick.clickCount = 0;
-                    groundClick.selectMenuOn = false;
+                    instantiatedTower = Instantiate(tower, new Vector3(GameManager.instance.towerX, GameManager.instance.towerY, -2), Quaternion.identity);
+                    GameManager.instance.clickCount = 0;
+                    GameManager.instance.selectMenuOn = false;
                 }
                 else
                 {
-                    groundClick.clickTowerNumber = towerNumber;
-                    previewTower.transform.localPosition = new Vector3(groundClick.towerX, groundClick.towerY, -3);
+                    GameManager.instance.clickTowerNumber = towerNumber;
+                    previewTower.transform.localPosition = new Vector3(GameManager.instance.towerX, GameManager.instance.towerY, -3);
                     previewTower.SetActive(true);
                 }
                 break;
             default:
-                groundClick.clickCount = 0;
+                GameManager.instance.clickCount = 0;
                 break;
 
         }
@@ -108,7 +102,7 @@ public class Click : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Debug.Log("click script");
-            if(groundClick.clickCount == 0)
+            if(GameManager.instance.clickCount == 0)
             {
                 previewTower.SetActive(false);
             }
@@ -128,6 +122,26 @@ public class Click : MonoBehaviour
                 Debug.Log("ELSE");
                 previewTower.SetActive(false);
             }
+        }
+        if(towerNumber == 0)
+        {
+            foreach (Collider2D col in Physics2D.OverlapBoxAll(new Vector2(GameManager.instance.towerX, GameManager.instance.towerY), new Vector2(1, 1), 0))
+            {
+                Debug.Log("충돌체 있음");
+                if (col.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+                {
+                    Debug.LogError("CAN NOT BUILD");
+                    canBuild = false;
+                    break;
+                }
+            }
+                
+        }
+        if(canBuild == false)
+        {
+            previewDangerGrid.transform.position = new Vector3(GameManager.instance.towerX, GameManager.instance.towerY, -4);
+            previewDangerGrid.SetActive(true);
+            canBuild = true;
         }
     }
 }

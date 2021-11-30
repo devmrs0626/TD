@@ -3392,7 +3392,7 @@ GameObject:
   - component: {fileID: 869194803}
   - component: {fileID: 869194802}
   - component: {fileID: 869194804}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3644,7 +3644,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   previewGrid: {fileID: 651779390}
-  previewDangerGrid: {fileID: 0}
+  previewDangerGrid: {fileID: 2058832473}
   previewTower: {fileID: 35035131}
   tower: {fileID: 1433030534671620494, guid: fcd61bbccff013b45ac3ca2ddbac2631, type: 3}
   towerNumber: 5
@@ -4365,7 +4365,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1077952061}
   - component: {fileID: 1077952060}
-  - component: {fileID: 1077952059}
   - component: {fileID: 1077952062}
   m_Layer: 6
   m_Name: background
@@ -4374,22 +4373,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1077952059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1077952058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fceb8704f61c5d4b954b47c6bf48d1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  previewGrid: {fileID: 651779390}
-  previewGroup: {fileID: 263687182}
-  landSelectMenu: {fileID: 1789810746}
-  towerSelectMenu: {fileID: 1045991752}
 --- !u!212 &1077952060
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4782,7 +4765,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   previewGrid: {fileID: 651779390}
-  previewDangerGrid: {fileID: 0}
+  previewDangerGrid: {fileID: 2058832473}
   previewTower: {fileID: 1393600770}
   tower: {fileID: 809824705798166575, guid: 54a840306ab9fd04abdea7e0207923e2, type: 3}
   towerNumber: 2
@@ -4836,6 +4819,59 @@ Transform:
   m_Father: {fileID: 1747712274}
   m_RootOrder: 123
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1163040013
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1163040014}
+  - component: {fileID: 1163040015}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1163040014
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163040013}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1163040015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163040013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fceb8704f61c5d4b954b47c6bf48d1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  previewGrid: {fileID: 651779390}
+  previewGroup: {fileID: 263687182}
+  landSelectMenu: {fileID: 1789810746}
+  towerSelectMenu: {fileID: 1045991752}
+  selectMenuOn: 0
+  towerX: 0
+  towerY: 0
+  clickCount: 0
+  clickTowerNumber: 0
+  canBuild: 0
 --- !u!1 &1186329694
 GameObject:
   m_ObjectHideFlags: 0
@@ -5605,7 +5641,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   previewGrid: {fileID: 651779390}
-  previewDangerGrid: {fileID: 0}
+  previewDangerGrid: {fileID: 2058832473}
   previewTower: {fileID: 473480509}
   tower: {fileID: 6937397761355891494, guid: 6c729268be1d82d419d65e0cc1962c3a, type: 3}
   towerNumber: 0
@@ -6393,7 +6429,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   previewGrid: {fileID: 651779390}
-  previewDangerGrid: {fileID: 0}
+  previewDangerGrid: {fileID: 2058832473}
   previewTower: {fileID: 436967773}
   tower: {fileID: 705715069389886017, guid: e517ce4217b39964290a2aef8b209179, type: 3}
   towerNumber: 1
@@ -7159,7 +7195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   previewGrid: {fileID: 651779390}
-  previewDangerGrid: {fileID: 0}
+  previewDangerGrid: {fileID: 2058832473}
   previewTower: {fileID: 1547416491}
   tower: {fileID: 3644058341618559858, guid: 01e746d3541fffe4c90e2cc9ddccf79c, type: 3}
   towerNumber: 4
@@ -8557,7 +8593,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   previewGrid: {fileID: 651779390}
-  previewDangerGrid: {fileID: 0}
+  previewDangerGrid: {fileID: 2058832473}
   previewTower: {fileID: 1310974122}
   tower: {fileID: 1070488579184946989, guid: 37aade04a1f50c940a8c5e9e4a94dc07, type: 3}
   towerNumber: 3
