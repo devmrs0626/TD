@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 [System.Serializable]
 public class Node
 {
@@ -32,36 +31,6 @@ public class EnemyMove : MonoBehaviour
     int index = 1;
     Vector2 targetPosition;
 
-    public void PathFindingPrepare()
-    {
-        startPos = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y));
-        // NodeArray의 크기 정해주고, isWall, x, y 대입
-        sizeX = topRight.x - bottomLeft.x + 1;
-        sizeY = topRight.y - bottomLeft.y + 1;
-        NodeArray = new Node[sizeX, sizeY];
-
-        for (int i = 0; i < sizeX; i++)
-        {
-            for (int j = 0; j < sizeY; j++)
-            {
-                bool isWall = false;
-                foreach (Collider2D col in Physics2D.OverlapCircleAll(new Vector2(i + bottomLeft.x, j + bottomLeft.y), 0.4f))
-                    if (col.gameObject.layer == LayerMask.NameToLayer("Land"))
-                    {
-                        isWall = true;
-                    }
-
-                NodeArray[i, j] = new Node(isWall, i + bottomLeft.x, j + bottomLeft.y);
-            }
-        }
-        // 시작과 끝 노드, 열린리스트와 닫힌리스트, 마지막리스트 초기화
-        StartNode = NodeArray[startPos.x - bottomLeft.x, startPos.y - bottomLeft.y];
-        TargetNode = NodeArray[targetPos.x - bottomLeft.x, targetPos.y - bottomLeft.y];
-
-        OpenList = new List<Node>() { StartNode };
-        ClosedList = new List<Node>();
-        FinalNodeList = new List<Node>();
-    }
     public void PathFinding()
     {
         startPos = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y));
@@ -167,17 +136,31 @@ public class EnemyMove : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        if (FinalNodeList.Count != 0) for (int i = 0; i < FinalNodeList.Count - 1; i++)
+        if (FinalNodeList.Count != 0)
+        {
+            for (int i = 0; i < FinalNodeList.Count - 1; i++)
+            {
                 Gizmos.DrawLine(new Vector2(FinalNodeList[i].x, FinalNodeList[i].y), new Vector2(FinalNodeList[i + 1].x, FinalNodeList[i + 1].y));
+            }
+        }
     }
 
     public void landBuild()
     {
         Debug.Log("이벤트 실행");
+        string temp = "";
+        for (int b = 0; b < 17; b++)
+        {
+            for (int a = 0; a < 9; a++)
+            {
+                Debug.Log(NodeArray[a, b]);
+            }
+        }
         int i = GameManager.instance.towerX - bottomLeft.x;
         int j = -GameManager.instance.towerY - bottomLeft.y;
+        Debug.Log(i + " --- " + j);
         NodeArray[i, j] = new Node(true, NodeArray[i, j].x, NodeArray[i, j].y);
-        string temp = "";
+        temp = "";
         for (int b = 0; b < 17; b++)
         {
             for (int a = 0; a < 9; a++)
@@ -201,13 +184,21 @@ public class EnemyMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //PathFindingPrepare();
+        GameObject.Find("selectMenu").transform.Find("landSelectMenu").transform.Find("landButton").GetComponent<BuildLand>().landBuild.AddListener(landBuild);
         PathFinding();
+        for (int b = 0; b < 17; b++)
+        {
+            for (int a = 0; a < 9; a++)
+            {
+                Debug.Log(NodeArray[a, b]);
+            }
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         if (!Input.GetKey(KeyCode.Space))
         {
             if (index < FinalNodeList.Count)

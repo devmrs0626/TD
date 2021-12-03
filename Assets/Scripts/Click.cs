@@ -32,12 +32,15 @@ public class Click : MonoBehaviour
             case 1:
                 if (GameManager.instance.clickTowerNumber == towerNumber)
                 {
-                    previewTower.SetActive(false);
-                    instantiatedTower = Instantiate(tower, new Vector3(GameManager.instance.towerX, GameManager.instance.towerY, -1), Quaternion.identity);
-                    Debug.Log("LAND BUILD");
-                    landBuild.Invoke();
-                    GameManager.instance.clickCount = 0;
-                    GameManager.instance.selectMenuOn = false;
+                    if(canBuild == true)
+                    {
+                        previewTower.SetActive(false);
+                        instantiatedTower = Instantiate(tower, new Vector3(GameManager.instance.towerX, GameManager.instance.towerY, -1), Quaternion.identity);
+                        Debug.Log("LAND BUILD");
+                        landBuild.Invoke();
+                        GameManager.instance.clickCount = 0;
+                        GameManager.instance.selectMenuOn = false;
+                    }
                 }
                 else
                 {
@@ -125,23 +128,40 @@ public class Click : MonoBehaviour
         }
         if(towerNumber == 0)
         {
+            /*if(Physics2D.OverlapBox(new Vector2(GameManager.instance.towerX, GameManager.instance.towerY), new Vector2(1, 1), 0, LayerMask.NameToLayer("Enemy")))
+            {
+                Debug.LogError("CAN NOT BUILD");
+                canBuild = false;
+            }*/
+            bool enemyCheck = false;
             foreach (Collider2D col in Physics2D.OverlapBoxAll(new Vector2(GameManager.instance.towerX, GameManager.instance.towerY), new Vector2(1, 1), 0))
             {
-                Debug.Log("충돌체 있음");
+                Debug.Log("c "+ col.gameObject.layer);
                 if (col.gameObject.layer == LayerMask.NameToLayer("Enemy"))
                 {
                     Debug.LogError("CAN NOT BUILD");
                     canBuild = false;
+                    enemyCheck = true;
                     break;
                 }
+            }   
+            if(enemyCheck == false)
+            {
+                canBuild = true;
             }
-                
+            else
+            {
+                enemyCheck = true;
+            }
         }
-        if(canBuild == false)
+        if(canBuild == true)
+        {
+            previewDangerGrid.SetActive(false);
+        }
+        else
         {
             previewDangerGrid.transform.position = new Vector3(GameManager.instance.towerX, GameManager.instance.towerY, -4);
             previewDangerGrid.SetActive(true);
-            canBuild = true;
         }
     }
 }
