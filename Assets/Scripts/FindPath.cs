@@ -18,7 +18,7 @@ public class Node
 public class FindPath : MonoBehaviour
 {
     public Vector2Int bottomLeft, topRight, startPos, targetPos;
-    public List<Node> FinalNodeList;
+    public static List<Node> FinalNodeList;
     public bool allowDiagonal, dontCrossCorner;
 
     int sizeX, sizeY;
@@ -129,7 +129,7 @@ public class FindPath : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        if (FinalNodeList.Count != 0)
+        if (FinalNodeList != null && FinalNodeList.Count != 0)
         {
             for (int i = 0; i < FinalNodeList.Count - 1; i++)
             {
