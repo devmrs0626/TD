@@ -2,6 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class Node
+{
+    public Node(bool _isWall, int _x, int _y) { isWall = _isWall; x = _x; y = _y; }
+
+    public bool isWall;
+    public Node ParentNode;
+
+    // G : 시작으로부터 이동했던 거리, H : |가로|+|세로| 장애물 무시하여 목표까지의 거리, F : G + H
+    public int x, y, G, H;
+    public int F { get { return G + H; } }
+}
 
 public class FindPath : MonoBehaviour
 {
@@ -13,8 +25,6 @@ public class FindPath : MonoBehaviour
     Node[,] NodeArray;
     Node StartNode, TargetNode, CurNode;
     List<Node> OpenList, ClosedList;
-
-
     public void PathFinding()
     {
         // NodeArray의 크기 정해주고, isWall, x, y 대입
@@ -36,8 +46,6 @@ public class FindPath : MonoBehaviour
                 NodeArray[i, j] = new Node(isWall, i + bottomLeft.x, j + bottomLeft.y);
             }
         }
-
-
         // 시작과 끝 노드, 열린리스트와 닫힌리스트, 마지막리스트 초기화
         StartNode = NodeArray[startPos.x - bottomLeft.x, startPos.y - bottomLeft.y];
         TargetNode = NodeArray[targetPos.x - bottomLeft.x, targetPos.y - bottomLeft.y];
@@ -45,8 +53,6 @@ public class FindPath : MonoBehaviour
         OpenList = new List<Node>() { StartNode };
         ClosedList = new List<Node>();
         FinalNodeList = new List<Node>();
-
-
         while (OpenList.Count > 0)
         {
             // 열린리스트 중 가장 F가 작고 F가 같다면 H가 작은 걸 현재노드로 하고 열린리스트에서 닫힌리스트로 옮기기
@@ -123,9 +129,42 @@ public class FindPath : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        if (FinalNodeList.Count != 0) for (int i = 0; i < FinalNodeList.Count - 1; i++)
+        if (FinalNodeList.Count != 0)
+        {
+            for (int i = 0; i < FinalNodeList.Count - 1; i++)
+            {
                 Gizmos.DrawLine(new Vector2(FinalNodeList[i].x, FinalNodeList[i].y), new Vector2(FinalNodeList[i + 1].x, FinalNodeList[i + 1].y));
+            }
+        }
     }
+
+    public void landBuild()
+    {
+        Debug.Log("이벤트 실행");
+        string temp = "";
+        int i = GameManager.instance.towerX - bottomLeft.x;
+        int j = -GameManager.instance.towerY - bottomLeft.y;
+        NodeArray[i, j] = new Node(true, NodeArray[i, j].x, NodeArray[i, j].y);
+        temp = "";
+        for (int b = 0; b < 17; b++)
+        {
+            for (int a = 0; a < 9; a++)
+            {
+                if (NodeArray[a, b].isWall == true)
+                {
+                    temp += "1";
+                }
+                else
+                {
+                    temp += "0";
+                }
+            }
+            temp += "\n";
+        }
+        Debug.Log(temp);
+        PathFinding();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -135,9 +174,6 @@ public class FindPath : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            PathFinding();
-        }
+
     }
 }
