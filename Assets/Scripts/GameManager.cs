@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public int towerY;
     public int clickCount;
     public int clickTowerNumber;
-    public bool canBuild;
+    public bool waveProgressing;
     public static GameManager instance;
     // Start is called before the first frame update
     private void Awake()
@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
         selectMenuOn = false;
         clickCount = 0;
         clickTowerNumber = 0;
-        canBuild = true;
+        waveProgressing = false;
 
     }
 

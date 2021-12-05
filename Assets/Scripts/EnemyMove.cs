@@ -20,7 +20,7 @@ public class EnemyMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (index < FindPath.FinalNodeList.Count)
+        if (GameManager.instance.waveProgressing == true && index < FindPath.FinalNodeList.Count)
         {
             targetPosition = new Vector2(FindPath.FinalNodeList[index].x, FindPath.FinalNodeList[index].y);
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed);

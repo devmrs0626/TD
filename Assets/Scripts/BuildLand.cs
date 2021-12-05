@@ -8,6 +8,7 @@ public class BuildLand : MonoBehaviour
     public GameObject previewGrid;
     public GameObject previewTower;
     public GameObject land;
+    public GameObject LandManager;
     Vector2 mousePosition;
     Camera Camera;
     GameObject instantiatedTower;
@@ -28,6 +29,7 @@ public class BuildLand : MonoBehaviour
             case 1:
                 previewTower.SetActive(false);
                 instantiatedTower = Instantiate(land, new Vector3(GameManager.instance.towerX, GameManager.instance.towerY, -1), Quaternion.identity);
+                instantiatedTower.transform.SetParent(LandManager.transform);
                 Debug.Log("LAND BUILD");
                 landBuild.Invoke();
                 GameManager.instance.clickCount = 0;

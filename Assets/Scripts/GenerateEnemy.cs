@@ -5,24 +5,26 @@ using UnityEngine;
 public class GenerateEnemy : MonoBehaviour
 {
     public GameObject enemy;
+    public int delayTime = 3;
+    float time = 0;
 
-    IEnumerator Generate()
-    {
-        for(int i = 0; i < 100; i++)
-        {
-            Instantiate(enemy);
-            yield return new WaitForSeconds(3);
-        }
-    }
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine("Generate");
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(GameManager.instance.waveProgressing == true)
+        {
+            if(time >= delayTime)
+            {
+                time = 0;
+                Instantiate(enemy);
+            }
+            time += Time.deltaTime;
+        }
     }
 }
